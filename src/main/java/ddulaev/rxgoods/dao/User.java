@@ -13,7 +13,7 @@ public class User {
 
 
     public User(Document doc) {
-        this(doc.getDouble("id").intValue(), doc.getString("name"), Currency.valueOf(doc.getString("currency")));
+        this(doc.getInteger("id"), doc.getString("name"), Currency.valueOf(doc.getString("currency")));
     }
 
     public Document getDocument() {

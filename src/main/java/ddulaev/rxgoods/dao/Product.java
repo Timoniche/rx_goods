@@ -11,6 +11,10 @@ public class Product {
     private final double costUSD;
     private final String name;
 
+    public Product(Document doc) {
+        this(doc.getInteger("id"), doc.getDouble("cost_usd"), doc.getString("name"));
+    }
+
     public double getCostWithCurrency(Currency currency) {
         return Currency.convertTo(costUSD, Currency.USD, currency);
     }
@@ -22,4 +26,8 @@ public class Product {
                 .append("name", name);
     }
 
+    @Override
+    public String toString() {
+        return "Product " + "id=" + id + ", name=" + name;
+    }
 }
