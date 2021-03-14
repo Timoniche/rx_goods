@@ -6,6 +6,7 @@ import java.util.Map;
 import com.mongodb.rx.client.Success;
 import ddulaev.rxgoods.configuration.ReactiveMongoDriver;
 import ddulaev.rxgoods.dao.Currency;
+import ddulaev.rxgoods.dao.Product;
 import ddulaev.rxgoods.dao.User;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.reactivex.netty.protocol.http.server.HttpServer;
@@ -23,6 +24,10 @@ public class RxNettyServer {
                     switch (command) {
                         case "addUser":
                             response = addUser(paramsMap);
+                            resp.setStatus(HttpResponseStatus.OK);
+                            break;
+                        case "addProduct":
+                            response = addProduct(paramsMap);
                             resp.setStatus(HttpResponseStatus.OK);
                             break;
                         default:
@@ -44,6 +49,17 @@ public class RxNettyServer {
         String name = paramsMap.get("name").get(0);
         Currency currency = Currency.valueOf(paramsMap.get("currency").get(0));
         if (ReactiveMongoDriver.addUser(new User(id, name, currency)) == Success.SUCCESS) {
+            return Observable.just("Success");
+        } else {
+            return Observable.just("Error");
+        }
+    }
+
+    private Observable<String> addProduct(Map<String, List<String>> paramsMap) {
+        int id = Integer.parseInt(paramsMap.get("id").get(0));
+        double costUSD = Double.parseDouble(paramsMap.get("cost_usd").get(0));
+        String name = paramsMap.get("name").get(0);
+        if (ReactiveMongoDriver.addProduct(new Product(id, costUSD, name)) == Success.SUCCESS) {
             return Observable.just("Success");
         } else {
             return Observable.just("Error");

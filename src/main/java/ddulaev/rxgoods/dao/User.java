@@ -17,7 +17,8 @@ public class User {
     }
 
     public Document getDocument() {
-        return new Document("id", id)
+        return new Document()
+                .append("id", id)
                 .append("name", name)
                 .append("currency", currency.name());
     }
